@@ -1,0 +1,62 @@
+#include <Wire.h>
+#include <Adafruit_Sensor.h>
+#include <Adafruit_ADXL345_U.h>
+
+
+Adafruit_ADXL345_Unified accel = Adafruit_ADXL345_Unified(12345);
+
+
+float threshold = 0.1;
+
+
+float prevX = 0.20;
+float prevY = -0.59;
+float prevZ = -8.20;
+
+
+void setup(void)
+{
+   Serial.begin(9600);
+   Serial.println("Adafruit ADXL345 test!");
+
+
+   if (!accel.begin())
+   {
+       Serial.println("Could not find a valid ADXL345 sensor, check wiring!");
+       while (1)
+           ;
+   }
+}
+
+
+void loop(void)
+{
+   sensors_event_t event;
+   accel.getEvent(&event);
+
+
+
+
+   if ((event.acceleration.x > 0.60 && event.acceleration.x < 0.75) && (event.acceleration.x != 0.43 && event.acceleration.x != 0.39))
+   {
+       Serial.println("1");
+       delay(500);
+   }
+
+
+   if ((event.acceleration.x > 0.3 && event.acceleration.x < 0.45) && event.acceleration.x != 0.43)
+   {
+       Serial.println("2");
+       delay(500); 
+   }
+
+
+   if ((event.acceleration.x > 0.45 && event.acceleration.x < 0.6) && (event.acceleration.x != 0.43 && event.acceleration.x != 0.39))
+   {
+       Serial.println("3");
+       delay(500); 
+   }
+
+
+   delay(300); //adjust delay as you need
+}
